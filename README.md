@@ -5,7 +5,7 @@ rest API for web development final project
 ```
 npm install
 ```
-### Compiles and minifies for production
+### Compiles TS changes to JS
 ```
 tsc --watch
 ```
