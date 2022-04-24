@@ -1,18 +1,24 @@
 import express, { Application } from 'express';
 import userRoutes from '../routes/userRoutes';
+import { dbConnection } from '../database/config';
 
 class Server {
 
-  private app: Application;
+  private app:  Application;
   private port: string;
   private apiPaths = {
     users: '/api/v1/user',
   }
 
   constructor() {
-    this.app = express();
+    this.app  = express();
     this.port = process.env.PORT || '3001';
+    this.connectDB();
     this.routes();
+  }
+
+  async connectDB() {
+    await dbConnection();
   }
 
   routes() {
