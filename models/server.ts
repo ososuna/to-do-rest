@@ -12,6 +12,7 @@ class Server {
 
   constructor() {
     this.app  = express();
+    this.app.use(express.json());
     this.port = process.env.PORT || '3001';
     this.connectDB();
     this.routes();
