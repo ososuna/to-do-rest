@@ -2,19 +2,21 @@ import { Request, Response } from 'express';
 import bcryptjs from 'bcryptjs';
 import { IUser, User } from '../models/user';
 
-export const getUsers = ( req: Request, res: Response ) => {
+export const getUsers = async( req: Request, res: Response ) => {
+
+  const { limit = 5, skip = 0 } = req.query;
+  const query = { estado: true };
+
+  const [ total, users ] = await Promise.all([
+    User.countDocuments( query ),
+    User.find( query )
+      .skip(Number( skip ))
+      .limit(Number( limit ))
+  ]);
+
   res.json({
-    msg: 'getUsers'
-  });
-}
-
-export const getUser = ( req: Request, res: Response ) => {
-
-  const { id } = req.params;
-
-  res.json({
-    msg: 'getUsers',
-    id
+      total,
+      users
   });
 }
 
@@ -35,7 +37,7 @@ export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) =>
   await user.save();
 
   res.json({
-    msg: 'create user',
+    msg: 'user created successfully',
     user
   });
 }
