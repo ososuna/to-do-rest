@@ -1,6 +1,19 @@
-import { Schema, model } from 'mongoose';
+import { Document, model, Model, Schema } from 'mongoose';
 
-const ToDoSchema = new Schema({
+export enum Status {
+  Pending = 'pending',
+  Completed = 'completed'
+}
+
+export interface IToDo extends Document {
+  title:        string,
+  description:  string,
+  date:         Date,
+  status:       Status.Pending,
+  active:       true,
+}
+
+export const ToDoSchema: Schema = new Schema({
   title: {
     type: String,
     required: true
@@ -16,8 +29,8 @@ const ToDoSchema = new Schema({
   status: {
     type: String,
     required: true,
-    default: 'Pending',
-    enum: ['Pending', 'Completed']
+    default: Status.Pending,
+    enum: Status
   },
   active: {
     type: Boolean,
@@ -25,4 +38,4 @@ const ToDoSchema = new Schema({
   }
 });
 
-module.exports = model( 'ToDo', ToDoSchema );
+export const ToDo: Model<IToDo> = model('ToDo', ToDoSchema);
