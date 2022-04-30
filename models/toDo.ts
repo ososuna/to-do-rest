@@ -1,7 +1,7 @@
 import { Document, model, Model, Schema } from 'mongoose';
 
 export enum Status {
-  Pending = 'pending',
+  Pending   = 'pending',
   Completed = 'completed'
 }
 
