@@ -15,8 +15,8 @@ export const getUsers = async( req: Request, res: Response ) => {
   ]);
 
   res.json({
-      total,
-      users
+    total,
+    users
   });
 }
 
@@ -42,14 +42,26 @@ export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) =>
   });
 }
 
-export const updateUser = ( req: Request, res: Response ) => {
+export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: Response ) => {
 
-  const { id }   = req.params;
-  const { body } = req;
+  const { id } = req.params;
+  const { _id, password, ...rest } = req.body;
+
+  const user = new User({ rest });
+  delete user._id;
+
+  console.log( user );
+
+  if ( password ) {
+    const salt    = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync( password, salt );
+  }
+
+  const updatedUser = await User.findByIdAndUpdate( id, user );
 
   res.json({
-    msg: 'putUser',
-    body
+    msg: 'user updated successfully',
+    user: updatedUser
   });
 }
 
