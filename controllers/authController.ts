@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcryptjs from 'bcryptjs';
-import { User } from '../models/user';
+import { User, IUser } from '../models/user';
 import { generateJWT } from '../helpers/jwt';
 
 export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) => {
