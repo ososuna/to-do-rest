@@ -3,6 +3,28 @@ import bcryptjs from 'bcryptjs';
 import { User } from '../models/user';
 import { generateJWT } from '../helpers/jwt';
 
+export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) => {
+
+  const { username, name, lastName, password } = req.body;
+
+  const user = new User({
+    username,
+    name,
+    lastName,
+    password
+  });
+
+  const salt    = bcryptjs.genSaltSync();
+  user.password = bcryptjs.hashSync( password, salt );
+
+  await user.save();
+
+  res.json({
+    msg: 'user created successfully',
+    user
+  });
+}
+
 export const loginUser = async( req: Request, res: Response ) => {
 
   const { username, password } = req.body;

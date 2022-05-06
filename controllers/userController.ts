@@ -20,28 +20,6 @@ export const getUsers = async( req: Request, res: Response ) => {
   });
 }
 
-export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) => {
-
-  const { username, name, lastName, password } = req.body;
-
-  const user = new User({
-    username,
-    name,
-    lastName,
-    password
-  });
-
-  const salt    = bcryptjs.genSaltSync();
-  user.password = bcryptjs.hashSync( password, salt );
-
-  await user.save();
-
-  res.json({
-    msg: 'user created successfully',
-    user
-  });
-}
-
 export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: Response ) => {
 
   const { id } = req.params;
