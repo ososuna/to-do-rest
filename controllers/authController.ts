@@ -17,11 +17,16 @@ export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) =>
   const salt    = bcryptjs.genSaltSync();
   user.password = bcryptjs.hashSync( password, salt );
 
+  const token = await generateJWT( user.id, name );
+
   await user.save();
 
-  res.json({
-    msg: 'user created successfully',
-    user
+  return res.status(201).json({
+    uid: user.id,
+    username,
+    name,
+    lastName,
+    token
   });
 }
 
