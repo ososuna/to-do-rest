@@ -43,12 +43,13 @@ export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: R
   });
 }
 
-export const deleteUser = ( req: Request, res: Response ) => {
+export const deleteUser = async( req: Request, res: Response ) => {
 
-  const { id }   = req.params;
+  const { id } = req.params;
+  const user = await User.findByIdAndUpdate( id, { active: false } );
 
   res.json({
-    msg: 'deleteUser',
-    id
+    user
   });
+
 }
