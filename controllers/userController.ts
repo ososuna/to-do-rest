@@ -5,7 +5,7 @@ import { IUser, User } from '../models/user';
 export const getUsers = async( req: Request, res: Response ) => {
 
   const { limit = 5, skip = 0 } = req.query;
-  const query = { estado: true };
+  const query = { active: true };
 
   const [ total, users ] = await Promise.all([
     User.countDocuments( query ),
