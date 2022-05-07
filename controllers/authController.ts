@@ -72,8 +72,9 @@ export const loginUser = async( req: Request, res: Response ) => {
 export const renewToken = async( req: Request, res: Response ) => {
 
   const { uid, name } = req.body;
+
   const token = await generateJWT( uid, name );
-  const user = await User.findById( uid );
+  const user  = await User.findById( uid );
 
   if ( user ) {
     const { username, lastName } = user;

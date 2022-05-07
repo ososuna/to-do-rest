@@ -2,6 +2,7 @@ import { Document, model, Model, Schema } from 'mongoose';
 import { IToDo } from './toDo';
 
 export interface IUser extends Document {
+  uid:        string;
   username:   string,
   name:       string,
   lastName:   string,
