@@ -7,27 +7,43 @@ export const createUser = async( req: Request<{}, {}, IUser>, res: Response ) =>
 
   const { username, name, lastName, password } = req.body;
 
-  const user = new User({
-    username,
-    name,
-    lastName,
-    password
-  });
+  try {
 
-  const salt    = bcryptjs.genSaltSync();
-  user.password = bcryptjs.hashSync( password, salt );
+    const existingUser = await User.findOne({ username });
 
-  const token = await generateJWT( user.id, name );
+    if ( existingUser ) {
+      return res.status(400).json({
+        msg: 'already existing username'
+      });
+    }
 
-  await user.save();
+    const user = new User({
+      username,
+      name,
+      lastName,
+      password
+    });
 
-  return res.status(201).json({
-    uid: user.id,
-    username,
-    name,
-    lastName,
-    token
-  });
+    const salt    = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync( password, salt );
+
+    const token = await generateJWT( user.id, name );
+
+    await user.save();
+
+    return res.status(201).json({
+      uid: user.id,
+      username,
+      name,
+      lastName,
+      token
+    });
+  } catch ( error ) {
+    return res.status(500).json({
+      msg: 'please talk to the admin'
+    });
+  }
+
 }
 
 export const loginUser = async( req: Request, res: Response ) => {
@@ -39,7 +55,7 @@ export const loginUser = async( req: Request, res: Response ) => {
 
     if ( !dbUser ) {
       return res.status(400).json({
-        msg: 'Invalid username or password'
+        msg: 'invalid username or password'
       });
     }
 
@@ -47,7 +63,7 @@ export const loginUser = async( req: Request, res: Response ) => {
 
     if ( !validPassword ) {
       return res.status(400).json({
-        msg: 'Invalid email or password'
+        msg: 'invalid username or password'
       });
     }
 
@@ -63,7 +79,7 @@ export const loginUser = async( req: Request, res: Response ) => {
   } catch ( error ) {
     console.log( error );
     return res.status(500).json({
-      msg: 'Please talk to the admin'
+      msg: 'please talk to the admin'
     });
   }
 
@@ -87,7 +103,7 @@ export const renewToken = async( req: Request, res: Response ) => {
     });
   } else {
     return res.status(400).json({
-      msg: 'User not found'
+      msg: 'user not found'
     });
   }
 }
