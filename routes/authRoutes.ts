@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { validateJWT } from '../middlewares/validateJwt';
 import {
   createUser,
   loginUser,
@@ -9,6 +10,6 @@ const router = Router();
 
 router.post("/", loginUser);
 router.post("/create", createUser);
-router.get("/renew", renewToken);
+router.get("/renew", validateJWT, renewToken);
 
 export default router;
