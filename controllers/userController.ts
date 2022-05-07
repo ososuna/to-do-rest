@@ -24,18 +24,17 @@ export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: R
 
   const { id } = req.params;
   const { _id, password, ...rest } = req.body;
+  const { username, name, lastName, toDos, active } = rest;
 
   const user = new User({
-    username: rest.username,
-    name: rest.name,
-    lastName: rest.lastName,
-    toDos: rest.toDos,
-    active: rest.active
+    username,
+    name,
+    lastName,
+    toDos,
+    active
   }).toObject();
 
   delete user._id;
-
-  console.log( user );
 
   if ( password ) {
     const salt    = bcryptjs.genSaltSync();
@@ -55,7 +54,14 @@ export const deleteUser = async( req: Request, res: Response ) => {
   const { id } = req.params;
   const user = await User.findByIdAndUpdate( id, { active: false } );
 
-  res.json({
+  if (!user) {
+    return res.status(400).json({
+      msg: 'user not found'
+    });
+  }
+
+  res.status(201).json({
+    msg: 'user deleted successfully',
     user
   });
 
