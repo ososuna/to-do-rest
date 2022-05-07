@@ -51,10 +51,10 @@ export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: R
 
 export const deleteUser = async( req: Request, res: Response ) => {
 
-  const { id } = req.params;
-  const user = await User.findByIdAndUpdate( id, { active: false } );
+  const { id }  = req.params;
+  const user    = await User.findByIdAndUpdate( id, { active: false } );
 
-  if (!user) {
+  if ( !user ) {
     return res.status(400).json({
       msg: 'user not found'
     });
