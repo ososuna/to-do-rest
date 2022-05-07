@@ -25,7 +25,14 @@ export const updateUser = async( req: Request<{ id: string }, {}, IUser>, res: R
   const { id } = req.params;
   const { _id, password, ...rest } = req.body;
 
-  const user = new User({ rest });
+  const user = new User({
+    username: rest.username,
+    name: rest.name,
+    lastName: rest.lastName,
+    toDos: rest.toDos,
+    active: rest.active
+  }).toObject();
+
   delete user._id;
 
   console.log( user );
