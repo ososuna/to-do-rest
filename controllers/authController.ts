@@ -63,3 +63,25 @@ export const loginUser = async( req: Request, res: Response ) => {
   }
 
 }
+
+export const renewToken = async( req: Request, res: Response ) => {
+
+  const { uid, name } = req.body;
+  const token = await generateJWT( uid, name );
+  const user = await User.findById( uid );
+
+  if ( user ) {
+    const { username, lastName } = user;
+    return res.json({
+      uid,
+      username,
+      name,
+      lastName,
+      token
+    });
+  } else {
+    return res.status(400).json({
+      msg: 'User not found'
+    });
+  }
+}
