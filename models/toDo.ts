@@ -1,4 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
+import { IUser } from './user';
 
 export enum Status {
   Pending   = 'pending',
@@ -9,6 +10,7 @@ export interface IToDo extends Document {
   title:        string,
   description:  string,
   date:         Date,
+  user:         IUser,
   status:       Status.Pending,
   active:       true,
 }
@@ -24,6 +26,11 @@ export const ToDoSchema: Schema = new Schema({
   },
   date: {
     type: Date,
+    required: true
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   status: {

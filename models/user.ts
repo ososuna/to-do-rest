@@ -30,7 +30,7 @@ export const UserSchema: Schema = new Schema({
     required: true
   },
   toDos: [{
-    type: ToDoSchema,
+    type: Schema.Types.ObjectId,
     ref: 'ToDo',
     default: []
   }],

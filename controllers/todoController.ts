@@ -13,7 +13,7 @@ export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Re
     });
   }
 
-  const toDos = user.toDos;
+  const toDos = await ToDo.find({ user: userId });
 
   const toDosByDate: { [key: string]: IToDo[] } = {};
 
@@ -47,7 +47,8 @@ export const createTodo = async( req: Request<{ userId: string }, {}, IToDo>, re
   const toDo = new ToDo({
     title,
     description,
-    date
+    date,
+    user,
   });
 
   const toDoCreated = await toDo.save();
