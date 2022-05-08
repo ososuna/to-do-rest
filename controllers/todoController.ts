@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { compareDates } from '../helpers/compare';
-import { IToDo, ToDo } from '../models/toDo';
+import { IToDo, Status, ToDo } from '../models/toDo';
 import { User } from '../models/user';
 
 export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Response ) => {
@@ -64,5 +64,20 @@ export const createTodo = async( req: Request<{ userId: string }, {}, IToDo>, re
 }
 
 export const completeTodo = async( req: Request, res: Response ) => {
+
+  const { id } = req.params;
+
+  const toDo = await ToDo.findByIdAndUpdate( id, { $set: { status: Status.Completed } } );
+
+  if ( !toDo ) {
+    return res.status(400).json({
+      msg: 'to do not found'
+    });
+  }
+
+  return res.status(201).json({
+    msg: 'to do completed successfully',
+    toDo
+  });
 
 }
