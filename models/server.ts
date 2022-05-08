@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import cors from 'cors';
 import userRoutes from '../routes/userRoutes';
 import authRoutes from '../routes/authRoutes';
 import todoRoutes from '../routes/todoRoutes';
@@ -17,6 +18,7 @@ class Server {
   constructor() {
     this.app  = express();
     this.app.use(express.json());
+    this.app.use( cors() );
     this.port = process.env.PORT || '3001';
     this.connectDB();
     this.routes();
