@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { compareDates } from '../helpers/compare';
 import { IToDo, ToDo } from '../models/toDo';
 import { User } from '../models/user';
 
@@ -14,6 +15,7 @@ export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Re
   }
 
   const toDos = await ToDo.find({ user: userId });
+  toDos.sort( compareDates );
 
   const toDosByDate: { [key: string]: IToDo[] } = {};
 
