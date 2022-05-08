@@ -14,7 +14,7 @@ export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Re
     });
   }
 
-  const toDos = await ToDo.find({ user: userId });
+  const toDos = await ToDo.find({ user: userId, active: true, status: 'pending' });
   toDos.sort( compareDates );
 
   const toDosByDate: { [key: string]: IToDo[] } = {};
@@ -66,4 +66,3 @@ export const createTodo = async( req: Request<{ userId: string }, {}, IToDo>, re
 export const completeTodo = async( req: Request, res: Response ) => {
 
 }
-
