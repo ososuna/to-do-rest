@@ -1,5 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
-import { IToDo } from './toDo';
+import { IToDo, ToDoSchema } from './toDo';
 
 export interface IUser extends Document {
   uid?:       string;
@@ -30,7 +30,7 @@ export const UserSchema: Schema = new Schema({
     required: true
   },
   toDos: [{
-    type: Schema.Types.ObjectId,
+    type: ToDoSchema,
     ref: 'ToDo',
     default: []
   }],
