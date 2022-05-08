@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import userRoutes from '../routes/userRoutes';
 import authRoutes from '../routes/authRoutes';
+import todoRoutes from '../routes/todoRoutes';
 import { dbConnection } from '../database/config';
 
 class Server {
@@ -9,7 +10,8 @@ class Server {
   private port: string;
   private apiPaths = {
     auth: '/api/v1/auth',
-    users: '/api/v1/user',
+    user: '/api/v1/user',
+    todo: '/api/v1/todo'
   }
 
   constructor() {
@@ -26,7 +28,8 @@ class Server {
 
   routes() {
     this.app.use( this.apiPaths.auth, authRoutes );
-    this.app.use( this.apiPaths.users, userRoutes );
+    this.app.use( this.apiPaths.user, userRoutes );
+    this.app.use( this.apiPaths.todo, todoRoutes );
   }
 
   listen() {
