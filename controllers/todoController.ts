@@ -14,21 +14,19 @@ export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Re
     });
   }
 
-  const toDos = await ToDo.find({ user: userId, active: true, status: 'pending' });
+  const { status = Status.Pending } = req.query;
+  const query = { user: userId, active: true, status };
+
+  const [ total, toDos ] = await Promise.all([
+    ToDo.countDocuments( query ),
+    ToDo.find( query )
+  ]);
+
   toDos.sort( compareDates );
 
-  const toDosByDate: { [key: string]: IToDo[] } = {};
-
-  toDos.forEach( toDo => {
-    const date = toDo.date.toISOString().split('T')[0];
-    if ( !toDosByDate[date] ) {
-      toDosByDate[date] = [];
-    }
-    toDosByDate[date].push( toDo );
-  });
-
   return res.json({
-    ...toDosByDate
+    total,
+    toDos
   });
 
 }
