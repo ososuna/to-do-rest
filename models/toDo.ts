@@ -7,12 +7,12 @@ export enum Status {
 }
 
 export interface IToDo extends Document {
-  title:        string,
-  description:  string,
-  date:         Date,
-  user:         IUser,
-  status:       Status.Pending,
-  active:       true,
+  title:          string,
+  description?:   string,
+  date:           Date,
+  user:           IUser,
+  status:         Status.Pending,
+  active:         true
 }
 
 export const ToDoSchema: Schema = new Schema({
