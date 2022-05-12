@@ -19,7 +19,7 @@ export const getTodos = async( req: Request<{ userId: string }, {}, {}>, res: Re
 
   const [ total, toDos ] = await Promise.all([
     ToDo.countDocuments( query ),
-    ToDo.find( query, '-_id -__v -active' )
+    ToDo.find( query, '-__v -active' )
   ]);
 
   toDos.sort( compareDates );
