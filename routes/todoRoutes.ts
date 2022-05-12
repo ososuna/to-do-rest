@@ -17,7 +17,6 @@ router.get("/:userId", [
 router.post("/:userId", [
   check('userId', 'not a valid id').isMongoId(),
   check('title', 'title is required').not().isEmpty(),
-  check('description', 'description is required').not().isEmpty(),
   check('date', 'date is required').not().isEmpty(),
   validateFields
 ], createTodo);
