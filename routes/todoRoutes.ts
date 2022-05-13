@@ -4,7 +4,8 @@ import { validateFields } from '../middlewares/validateFields';
 import {
   getTodos,
   createTodo,
-  completeTodo
+  completeTodo,
+  updateToDo
 } from '../controllers/todoController';
 
 const router = Router();
@@ -25,5 +26,10 @@ router.put("/:id", [
   check('id', 'not a valid id').isMongoId(),
   validateFields
 ], completeTodo);
+
+router.put("/update/:id", [
+  check('id', 'not a valid id').isMongoId(),
+  validateFields
+], updateToDo);
 
 export default router;
