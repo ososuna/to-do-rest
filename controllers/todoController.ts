@@ -79,3 +79,31 @@ export const completeTodo = async( req: Request, res: Response ) => {
   });
 
 }
+
+export const updateToDo = async( req: Request<{ id: string }, {}, IToDo>, res: Response ) => {
+
+  const { id } = req.params;
+  const { _id, ...rest } = req.body;
+  const { title, date, description } = rest;
+
+  const toDo = new ToDo({
+    title,
+    date,
+    description
+  }).toObject();
+
+  delete toDo._id;
+
+  const updatedToDo = await ToDo.findByIdAndUpdate( id, toDo );
+
+  if ( !updatedToDo ) {
+    return res.status(400).json({
+      msg: 'to do not found'
+    });
+  }
+
+  res.json({
+    msg: 'to do updated successfully',
+    toDo: updatedToDo
+  });
+}
